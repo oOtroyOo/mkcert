@@ -68,6 +68,9 @@ const advancedUsage = `Advanced options:
 	-CAROOT
 	    Print the CA certificate and key storage location.
 
+	-expireDate XXXX
+	    Set expiration date. Auto detect format string (help: https://github.com/araddon/dateparse)
+
 	$CAROOT (environment variable)
 	    Set the CA certificate and key storage location. (This allows
 	    maintaining multiple local CAs in parallel.)
@@ -103,6 +106,7 @@ func main() {
 		keyFileFlag   = flag.String("key-file", "", "")
 		p12FileFlag   = flag.String("p12-file", "", "")
 		versionFlag   = flag.Bool("version", false, "")
+		expireFlag    = flag.String("expireDate", "", "")
 	)
 	flag.Usage = func() {
 		fmt.Fprint(flag.CommandLine.Output(), shortUsage)
@@ -146,6 +150,7 @@ func main() {
 		installMode: *installFlag, uninstallMode: *uninstallFlag, csrPath: *csrFlag,
 		pkcs12: *pkcs12Flag, ecdsa: *ecdsaFlag, client: *clientFlag,
 		certFile: *certFileFlag, keyFile: *keyFileFlag, p12File: *p12FileFlag,
+		expireDate: *expireFlag,
 	}).Run(flag.Args())
 }
 
@@ -166,6 +171,7 @@ type mkcert struct {
 	// will keep failing until the next execution. TODO: maybe execve?
 	// https://github.com/golang/go/issues/24540 (thanks, myself)
 	ignoreCheckFailure bool
+	expireDate         string
 }
 
 func (m *mkcert) Run(args []string) {
