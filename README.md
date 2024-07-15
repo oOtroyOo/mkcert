@@ -1,5 +1,7 @@
 # mkcert
 
+![example workflow](https://github.com/oOtroyOo/mkcert/actions/workflows/release.yml/badge.svg)
+
 mkcert is a simple tool for making locally-trusted development certificates. It requires no configuration.
 
 ```
